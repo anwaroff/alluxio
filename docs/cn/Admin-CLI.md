@@ -19,7 +19,8 @@ Usage: alluxio fsadmin [generic options]
        ...
 ```
  
-以UFS URI作为参数的`fsadmin ufs`子命令，参数应该是像`hdfs://<name-service>/`这样的根UFS URI，而不是`hdfs://<name-service>/<folder>`。
+以UFS URI作为参数的`fsadmin ufs`子命令，参数应该是像`hdfs://<name-service>/`这样的根
+UFS URI，而不是`hdfs://<name-service>/<folder>`。
  
 ##操作列表
  
@@ -36,6 +37,26 @@ Usage: alluxio fsadmin [generic options]
  
 ##示例用例
 
++### backup
++
++The `backup` command creates a backup of Alluxio metadata.
++
++Back up to the default backup folder (configured by `alluxio.master.backup.directory`)
++```
++$ ./bin/alluxio fsadmin backup
++Successfully backed up journal to hdfs://mycluster/opt/alluxio/backups/alluxio-backup-2018-5-29-1527644810.gz
++```
++Back up to a specific directory in the under storage.
++```
++$ ./bin/alluxio fsadmin backup /alluxio/special_backups
++Successfully backed up journal to hdfs://mycluster/opt/alluxio/backups/alluxio-backup-2018-5-29-1527644810.gz
++```
++Back up to a specific directory on the primary master's local filesystem.
++```
++$ ./bin/alluxio fsadmin backup /opt/alluxio/backups/ --local
++Successfully backed up journal to file:///opt/alluxio/backups/alluxio-backup-2018-5-29-1527644810.gz on master Master2
++```
++
 ### report
 
 `report`命令提供了Alluxio运行中的集群信息。
@@ -58,12 +79,14 @@ $ ./bin/alluxio fsadmin report ufs
 ```
 
 使用 `-h` 选项来获得更多信息。
- 
+
 ### ufs
  
-`ufs`命令提供了选项来更新挂载的底层存储的属性。`mode`选项可用于将底层存储设置为维护模式。目前某些操作可能会受到限制。
+`ufs`命令提供了选项来更新挂载的底层存储的属性。`mode`选项可用于将底层存储设置为维护模式。
+目前某些操作可能会受到限制。
  
-例如，一个底层存储可以设为`readOnly`模式来禁止写入操作。 Alluxio将不会对底层存储尝试任何写入操作。
+例如，一个底层存储可以设为`readOnly`模式来禁止写入操作。
+Alluxio将不会对底层存储尝试任何写入操作。
  
 ```bash
 $ ./bin/alluxio fsadmin ufs --mode readOnly hdfs://ns
